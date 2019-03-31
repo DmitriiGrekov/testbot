@@ -4,7 +4,14 @@ from telebot import types
 token="889958255:AAFx0HHiWKr1qgcjA5jOYLsW_d84gxiKZ7U"
 
 bot=telebot.TeleBot(token)
-
+conn = sqlite3.connect("mydatabase.db") # или :memory: чтобы сохранить в RAM
+cursor = conn.cursor()
+    
+# Создание таблицы
+cursor.execute("""CREATE TABLE langer
+                  (id text, lang text)
+               """)
+cursor.execute("INSERT INTO langer VALUES (?,?)", [message.chat.id,"-"])
 def create_keyboard():
     keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
     button_phone = types.KeyboardButton(text="Переводчик")
@@ -17,14 +24,7 @@ def hand_mes(message):
     keyboard=create_keyboard()
     send=bot.send_message(message.chat.id, "Выбериет функцию", reply_markup=keyboard)
     bot.register_next_step_handler(send,second)
-    conn = sqlite3.connect(":memory:") # или :memory: чтобы сохранить в RAM
-    cursor = conn.cursor()
     
-# Создание таблицы
-    cursor.execute("""CREATE TABLE langer
-                  (id text, lang text)
-               """)
-    cursor.execute("INSERT INTO langer VALUES (?,?)", [message.chat.id,"-"])
     
 def second(message):
     
