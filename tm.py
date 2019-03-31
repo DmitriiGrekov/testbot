@@ -55,7 +55,7 @@ def third(message):
     conn = sqlite3.connect("mydatabase.db") # или :memory: чтобы сохранить в RAM
     cursor = conn.cursor()
     query="UPDATE albums SET lang = '%s' WHERE id = '%s'"%(message.text,message.chat.id)
-    cursor.execute()
+    
     sql = "SELECT * FROM langer WHERE id=?"
     cursor.execute(sql, [(message.chat.id)])
     bot.send_message(message.chat.id,cursor.fetchall())
