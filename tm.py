@@ -1,22 +1,20 @@
 import telebot
+from telebot import types
 token="889958255:AAFx0HHiWKr1qgcjA5jOYLsW_d84gxiKZ7U"
+persons={}
 
-START,TITLE,PRICE,CONFIRMATION=range(4)
+@bot.message_handler(command=["start",'help'])
+def hand_mes(message):
 
-bot=telebot.TeleBot(token)
-@bot.message_handler(func=lambda message:get_state(message) == START)
-def handler_messag(message):
-    bot.send_message(message.chat.id,"НАПИШИ НАЗВАНИЕ")
-    update_state(message,TITLE)
-@bot.message_handler(func=lambda message:get_state(message) == TITLE)
-def handler_title(message):
-    bot.send_message(message.chat.id,"НАПИШИ ЦЕНУ")
-    update_state(message,TITLE)
+    keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
+    button_phone = types.KeyboardButton(text="Переводчик")
+    
+    keyboard.add(button_phone)
+    send=bot.send_message(message.chat.id, "Выберите функцию", reply_markup=keyboard)
+    bot.register.next_step_handler(send,second)
+def second(message):
+    if message.text.lower == 'переводчик':
+        persons[message.chat.id]=['переводчик']
+    print(persons)
+
 bot.polling()
-
-from collections import defaultdict
-USER_STATE=defaultdict(lambda:START)
-def get_state(message):
-    return USER_STATE(message.chat.id)
-def updete_state(message,state):
-    USER_STATE[message.chat.id]=state
