@@ -16,7 +16,7 @@ def hand_mes(message):
 def second(message):
     global persons
     if message.text.lower() == "переводчик":
-        persons[message.chat.id]=['переводчик',""]
+        persons[message.chat.id]=['переводчик',"23"]
     bot.send_message(message.chat.id,persons[message.chat.id])
 
 bot.polling()
