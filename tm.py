@@ -6,7 +6,7 @@ bot=telebot.TeleBot(token)
 
 @bot.message_handler(commands=["start",'help'])
 def hand_mes(message):
-     Эти параметры для клавиатуры необязательны, просто для удобства
+     
     keyboard = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True)
     button_phone = types.KeyboardButton(text="Переводчик")
     
