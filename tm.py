@@ -17,7 +17,7 @@ def hand_mes(message):
     keyboard=create_keyboard()
     send=bot.send_message(message.chat.id, "Выбериет функцию", reply_markup=keyboard)
     bot.register_next_step_handler(send,second)
-    conn = sqlite3.connect("mydatabase.db") # или :memory: чтобы сохранить в RAM
+    conn = sqlite3.connect(":memory:") # или :memory: чтобы сохранить в RAM
     cursor = conn.cursor()
     
 # Создание таблицы
