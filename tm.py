@@ -14,6 +14,8 @@ def hand_mes(message):
     send=bot.send_message(message.chat.id, "Выбериет функцию", reply_markup=keyboard)
     bot.register_next_step_handler(send,second)
 def second(message):
-    bot.send_message(message.chat.id,"Вы отправили -> " +message.text)
+    if message.text.lower() == "переводчик":
+        persons[message.chat.id]=['переводчик']
+    bot.send_message(message.chat.id,persons)
 
 bot.polling()
