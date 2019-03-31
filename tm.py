@@ -49,7 +49,7 @@ def third(message):
         conn.commit()
         keyboard=create_keyboard()
         bot.send_message(message.chat.id,"Выберите функцию",reply_markup=keyboard)
-        break
+        return 1
     
     conn = sqlite3.connect("mydatabase.db") # или :memory: чтобы сохранить в RAM
     cursor = conn.cursor()
