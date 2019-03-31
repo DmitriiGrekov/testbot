@@ -18,8 +18,8 @@ def hand_mes(message):
     bot.register_next_step_handler(send,second)
 def second(message):
     if message.text == 'Переводчик':
-        lon=message.location.longtitude
-        lan=message.location.lattitude
+        lon=message.location.longitude
+        lan=message.location.latitude
         bot.send_message(message.chat.id,"Широта "+lon+"Долгота "+lan)
     
         
