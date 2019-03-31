@@ -30,10 +30,10 @@ def second(message):
     
 
     keyboard = types.ReplyKeyboardMarkup(row_width=2, resize_keyboard=True)
-    butt-1 = types.KeyboardButton(text="rus-eng")
-    butt-2 = types.KeyboardButton(text="eng-rus")
+    butt_1 = types.KeyboardButton(text="rus-eng")
+    butt_2 = types.KeyboardButton(text="eng-rus")
     button_back = types.KeyboardButton(text="/Назад")
-    keyboard.add(butt-1,butt-2,button_back)
+    keyboard.add(butt_1,butt_2,button_back)
     send=bot.send_message(message.chat.id,"Введите язык",reply_markup=keyboard)
     bot.register_next_step_handler(send,third)
 def third(message):
