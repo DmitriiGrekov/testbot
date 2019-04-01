@@ -20,7 +20,7 @@ def get_lang(user_id):
 
 @bot.message_handler(commands=["start"])
 def handle_message(message):
-    keyboar=types.ReplyKeutyboardMarkup(True,True)
+    keyboar=types.ReplyKeyboardMarkup(True,True)
     button1=types.ReplyKeyboardButton("Переводчик")
     keyboar.add(button1)
     bot.send_message(message.chat.id,"Выберите функцию",reply_markup=keyboar)
