@@ -30,7 +30,7 @@ def handle_message(message):
 
 @bot.message_handler(content_types=["text"])
 def handle_lang(message):
-    if message.text.lower == "переводчик":
+    if message.text.lower() == "переводчик":
         update_state(message,TRANSLATED)
         bot.send_message(message.chat.id,'Установлен стате TRANSLATED')
 
