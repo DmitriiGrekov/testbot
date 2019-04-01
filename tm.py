@@ -5,7 +5,7 @@ from collections import defaultdict
 token="889958255:AAFx0HHiWKr1qgcjA5jOYLsW_d84gxiKZ7U"
 START,TRANSLATED,LANG1,LANG2=range(4)
 bot=telebot.TeleBot(token)    
-USER_STATE=defaultdic(lambda:START)
+USER_STATE=defaultdict(lambda:START)
 
 def get_state(message):
     return USER_STATE[message.chat.id]
