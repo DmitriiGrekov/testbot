@@ -3,7 +3,7 @@ import sqlite3
 from telebot import types
 from collections import defaultdict
 token="889958255:AAFx0HHiWKr1qgcjA5jOYLsW_d84gxiKZ7U"
-START,TRANSLATED,LANG1,LANG2,RESULT=range(5)
+START,LANG1,LANG2,RESULT=range(4)
 bot=telebot.TeleBot(token)    
 
     
@@ -21,16 +21,26 @@ def handle_message(message):
 @bot.message_handler(func=lambda message:get_state(message)== START)
 def handle_lang(message):
     if message.text.lower() == "переводчик":
-        update_state(message,TRANSLATED)
-        bot.send_message(message.chat.id,'Установлен стате TRANSLATED')
+        update_state(message,LANG1)
+        bot.send_message(message.chat.id,'Выберите первый язык')
 
 
 
-@bot.message_handler(func=lambda message:get_state(message)== TRANSLATED)
+@bot.message_handler(func=lambda message:get_state(message)== LANG1)
 def handle_lang1(message):
-    bot.send_message(message.chat.id,"Выберите первый язык")
+    bot.send_message(message.chat.id,"Выберите второй язык")
     
-
+    set_lang(message.chat.id,'lang1',message.text)
+    update_state(message,LANG2)
+@bot.message_handler(func=lambda message:get_state(message)== LANG2)
+def handle_lang2(message):
+    bot.send_message(message.chat.id,"Введите фразу")
+    update_state(message,RESULT)
+    set_lang(message.chat.id,'lang2',message.text)
+@bot.message_handler(func=lambda message:get_state(message)== RESULT)
+def translate(message):
+    bot.send_message(message.chat.id,"Ваша фраза- "+message.text)
+    bot.send_message(message.chat.id,get_lang(message.chat.id))
     
        
 USER_STATE=defaultdict(lambda:START)
