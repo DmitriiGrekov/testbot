@@ -37,10 +37,13 @@ def handle_lang2(message):
     bot.send_message(message.chat.id,"Введите фразу")
     update_state(message,RESULT)
     set_lang(message.chat.id,'lang2',message.text)
+
+    langer=get_lang(message.chat.id)
+    bot.send_message(message.chat.id,"Ваш язык {}".format(langer))
 @bot.message_handler(func=lambda message:get_state(message)== RESULT)
 def translate(message):
     bot.send_message(message.chat.id,"Ваша фраза- "+message.text)
-    bot.send_message(message.chat.id,get_lang(message.chat.id))
+    
     
        
 USER_STATE=defaultdict(lambda:START)
