@@ -32,6 +32,7 @@ def handle_lang(message):
         bot.send_message(message.chat.id,'Выберите первый язык',reply_markup=markup)
     elif message.text.lower() == "тест":
         update_state(message,TEST)
+        bot.send_message(message.chat.id,"Руслан гей?(да/нет)")
         
     
 
@@ -76,10 +77,16 @@ def translate(message):
     r=requests.post(url,data={'key':key,'text':TEXT,'lang':LANg})
     bot.send_message(message.chat.id,*eval(r.text)['text'])
     bot.send_message(message.chat.id,"Введите фразу",reply_markup=markup)
+ 
 @bot.message_handler(func=lambda message:get_state(message)== TEST)
 def handle_test(message):
-    bot.send_message(message.chat.id,"Это тест")
-    
+    if message.text.lower()=="да":
+        bot.send_message(message.chat.id,"Красава,уважаю")
+    elif message.text.lower() == "нет":
+        bot.send_message(message.chat.id,"Руслан ты?")
+    else:
+        bot.send_message(message.chat.id,"Ты не умеешь играть в эту игру")
+    update_state(message,START)
     
     
        
