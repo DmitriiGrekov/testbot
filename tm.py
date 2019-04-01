@@ -56,6 +56,12 @@ def handle_lang2(message):
     
 @bot.message_handler(func=lambda message:get_state(message)== RESULT)
 def translate(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+    itembtn1 = types.KeyboardButton('/start') #Название кнопки 1
+    
+    
+    markup.add(itembtn1)
+    
     
     langer=get_lang(message.chat.id)
     lang1=langer["lang1"]
@@ -67,7 +73,7 @@ def translate(message):
     LANg=lang1+"-"+lang2
     r=requests.post(url,data={'key':key,'text':TEXT,'lang':LANg})
     bot.send_message(message.chat.id,*eval(r.text)['text'])
-    bot.send_message(message.chat.id,"Введите фразу")
+    bot.send_message(message.chat.id,"Введите фразу",reply_markup=markup)
     
     
     
