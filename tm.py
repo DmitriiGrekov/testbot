@@ -3,7 +3,7 @@ import sqlite3
 from telebot import types
 from collections import defaultdict
 token="889958255:AAFx0HHiWKr1qgcjA5jOYLsW_d84gxiKZ7U"
-START,TRANSLATED,LANG1,LANG2,RESULT=range(4)
+START,TRANSLATED,LANG1,LANG2,RESULT=range(5)
 bot=telebot.TeleBot(token)    
 USER_STATE=defaultdict(lambda:START)
 PERSONS=defaultdict(lambda:{})
