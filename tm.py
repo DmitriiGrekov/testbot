@@ -4,7 +4,7 @@ import requests
 from telebot import types
 from collections import defaultdict
 token="889958255:AAFx0HHiWKr1qgcjA5jOYLsW_d84gxiKZ7U"
-START,LANG1,LANG2,RESULT=range(4)
+START,LANG1,LANG2,RESULT,TEST=range(4)
 bot=telebot.TeleBot(token)    
 
     
@@ -13,8 +13,8 @@ bot=telebot.TeleBot(token)
 def handle_message(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
     itembtn1 = types.KeyboardButton('Переводчик') #Название кнопки 1 
-    
-    markup.add(itembtn1)
+    itembtn2 = types.KeyboardButton('Тест')
+    markup.add(itembtn1,itembtn2)
     
     bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
     
@@ -30,6 +30,8 @@ def handle_lang(message):
     
         markup.add(itembtn1,itembtn2)
         bot.send_message(message.chat.id,'Выберите первый язык',reply_markup=markup)
+    elif message.text.lower() == "тест":
+        update_state(message,TEST)
         
     
 
@@ -74,6 +76,9 @@ def translate(message):
     r=requests.post(url,data={'key':key,'text':TEXT,'lang':LANg})
     bot.send_message(message.chat.id,*eval(r.text)['text'])
     bot.send_message(message.chat.id,"Введите фразу",reply_markup=markup)
+@bot.message_handler(func=lambda message:get_state(message)== TEST)
+def handle_test(message):
+    bot.send_message(message.chat.id,"Это тест")
     
     
     
