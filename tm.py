@@ -4,7 +4,7 @@ import requests
 from telebot import types
 from collections import defaultdict
 token="889958255:AAFx0HHiWKr1qgcjA5jOYLsW_d84gxiKZ7U"
-START,LANG1,LANG2,RESULT,TEST=range(4)
+START,LANG1,LANG2,RESULT,TEST=range(5)
 bot=telebot.TeleBot(token)    
 
     
