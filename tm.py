@@ -65,7 +65,9 @@ def translate(message):
     
     markup.add(itembtn1)
     
-    
+    if message.text == "/start":
+        update_state(message,START)
+        
     langer=get_lang(message.chat.id)
     lang1=langer["lang1"]
     lang2=langer["lang2"]
@@ -77,6 +79,7 @@ def translate(message):
     r=requests.post(url,data={'key':key,'text':TEXT,'lang':LANg})
     bot.send_message(message.chat.id,*eval(r.text)['text'])
     bot.send_message(message.chat.id,"Введите фразу",reply_markup=markup)
+    
  
 @bot.message_handler(func=lambda message:get_state(message)== TEST)
 def handle_test(message):
