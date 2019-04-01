@@ -13,7 +13,7 @@ bot=telebot.TeleBot(token)
 def handle_message(message):
     markup = types.InlineKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
     itembtn1 = types.InlineKeyboardButton('Переводчик',callback_data="translate") #Название кнопки 1 
-    itembtn2 = types.InlineKeyboardButton('Тест'callback_data="test")
+    itembtn2 = types.InlineKeyboardButton('Тест',callback_data="test")
     markup.add(itembtn1,itembtn2)
     
     bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
