@@ -28,8 +28,8 @@ def handle_message(message):
 
 @bot.message_handler(content_types=["text"])
 def handle_lang(message):
-    if message.text.lower == "Переводчик":
-        update_state(message,TRANSLATED):
+    if message.text.lower == "переводчик":
+        update_state(message,TRANSLATED)
 
 
 
