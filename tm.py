@@ -18,7 +18,7 @@ def handle_message(message):
     bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
     
 
-@bot.message_handler(content_types=["text"])
+@bot.message_handler(func=lambda message:get_state(message)== START)
 def handle_lang(message):
     if message.text.lower() == "переводчик":
         update_state(message,TRANSLATED)
@@ -26,7 +26,7 @@ def handle_lang(message):
 
 
 
-@bot.message_handler(func=lambda message:get_state(message)==TRANSLATED)
+@bot.message_handler(func=lambda message:get_state(message)== TRANSLATED)
 def handle_lang1(message):
     bot.send_message(message.chat.id,"Выберите первый язык")
     
