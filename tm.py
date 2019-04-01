@@ -20,10 +20,12 @@ def get_lang(user_id):
 
 @bot.message_handler(commands=["start"])
 def handle_message(message):
-    keyboar=types.ReplyKeyboardMarkup(True,True)
-    button1=types.ReplyKeyboardButton("Переводчик")
-    keyboar.add(button1)
-    bot.send_message(message.chat.id,"Выберите функцию",reply_markup=keyboar)
+    markup = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+    itembtn1 = types.KeyboardButton('Переводчик') #Название кнопки 1 
+    
+    markup.add(itembtn1)
+    
+    bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
     
 
 @bot.message_handler(content_types=["text"])
