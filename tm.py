@@ -10,7 +10,7 @@ bot=telebot.TeleBot(token)
 
 @bot.message_handler(commands=["start"])
 def handle_message(message):
-    markup = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+    markup = types.ReplyKeyboardMarkup(row_width=1, resize_keyboard=True,one_time_keyboard : True) #Активация, название, количество кнопок по одной в ряду 
     itembtn1 = types.KeyboardButton('Переводчик') #Название кнопки 1 
     
     markup.add(itembtn1)
@@ -42,9 +42,11 @@ def handle_lang2(message):
     
 @bot.message_handler(func=lambda message:get_state(message)== RESULT)
 def translate(message):
-    bot.send_message(message.chat.id,"Ваша фраза- "+message.text)
+    
     langer=get_lang(message.chat.id)
-    bot.send_message(message.chat.id,"Ваш язык {}".format(langer))
+    lang1=langer["lang1"]
+    lang2=langer["lang2"]
+    bot.send_message(message.chat.id,lang1+"-"+lang2)
     
     
        
