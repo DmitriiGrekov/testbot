@@ -54,6 +54,8 @@ def handle_lang2(message):
     bot.send_message(message.chat.id,"Введите фразу")
     update_state(message,RESULT)
     set_lang(message.chat.id,'lang2',message.text)
+    if message.text == "/start":
+        update_state(message,START)
 
     
     
@@ -65,8 +67,7 @@ def translate(message):
     
     markup.add(itembtn1)
     
-    if message.text == "/start":
-        update_state(message,START)
+    
         
     langer=get_lang(message.chat.id)
     lang1=langer["lang1"]
