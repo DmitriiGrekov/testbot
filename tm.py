@@ -22,14 +22,27 @@ def handle_message(message):
 def handle_lang(message):
     if message.text.lower() == "переводчик":
         update_state(message,LANG1)
-        bot.send_message(message.chat.id,'Выберите первый язык')
+        
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+        itembtn1 = types.KeyboardButton('ru') #Название кнопки 1
+        itembtn2 = types.KeyboardButton('en')
+    
+        markup.add(itembtn1,itembtn2)
+        bot.send_message(message.chat.id,'Выберите первый язык',reply_markup=markup)
+        
+    
 
 
 
 @bot.message_handler(func=lambda message:get_state(message)== LANG1)
 def handle_lang1(message):
-    bot.send_message(message.chat.id,"Выберите второй язык")
     
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+    itembtn1 = types.KeyboardButton('ru') #Название кнопки 1
+    itembtn2 = types.KeyboardButton('en')
+    
+    markup.add(itembtn1,itembtn2)
+    bot.send_message(message.chat.id,'Выберите второй язык',reply_markup=markup)
     set_lang(message.chat.id,'lang1',message.text)
     update_state(message,LANG2)
 @bot.message_handler(func=lambda message:get_state(message)== LANG2)
@@ -46,7 +59,15 @@ def translate(message):
     langer=get_lang(message.chat.id)
     lang1=langer["lang1"]
     lang2=langer["lang2"]
-    bot.send_message(message.chat.id,lang1+"-"+lang2)
+    
+    url='https://translate.yandex.net/api/v1.5/tr.json/translate?'
+    key='trnsl.1.1.20190201T172728Z.34034e93ef318814.4cd85f71122011aa48770690493d232d5ff78c60'    
+    TEXT=message.text
+    LANg=lang1+"-"+lang2
+    r=requests.post(url,data={'key':key,'text':TEXT,'lang':LANg})
+    bot.send_message(message.chat.id,*eval(r.text)['text'])
+    bot.send_message(message.chat.id,"Введите фразу")
+    
     
     
        
