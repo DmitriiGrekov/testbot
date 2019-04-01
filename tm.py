@@ -61,9 +61,17 @@ def handle_lang2(message):
     
 @bot.message_handler(func=lambda message:get_state(message)== RESULT)
 def translate(message):
-    if message.text == "назад":
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+    itembtn1 = types.KeyboardButton('/start') #Название кнопки 1
+    
+    
+    markup.add(itembtn1)
+    
+    if message.text == "/start":
         update_state(message,START)
-        bot.send_message(message.chat.id,"Возвращаюсь в меню")
+        bot.send_message(message.chat.id,"Возвращаюсь в меню",reply_markup=markup)
+        
+        
     else:
         
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
@@ -89,7 +97,15 @@ def translate(message):
  
 @bot.message_handler(func=lambda message:get_state(message)== TEST)
 def handle_test(message):
-    if message.text.lower()=="да":
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+    itembtn1 = types.KeyboardButton('/start') #Название кнопки 1
+    
+    
+    markup.add(itembtn1)
+    if message.text == "/start":
+        update_state(message,START)
+        bot.send_message(message.chat.id,"Возвращаюсь в меню",reply_markup=markup)
+    elif message.text.lower()=="да":
         bot.send_message(message.chat.id,"Красава,уважаю")
     elif message.text.lower() == "нет":
         bot.send_message(message.chat.id,"Руслан ты?")
