@@ -102,40 +102,7 @@ def handle_lang1(message):
     
     
 
-def translate(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
-    itembtn1 = types.KeyboardButton('@НАЗАД') #Название кнопки 1
-    
-    
-    markup.add(itembtn1)
-    
-    if message.text == "@НАЗАД":
-        update_state(message,START)
-        bot.send_message(message.chat.id,"Возвращаюсь в меню",reply_markup=markup)
-        
-        
-    else:
-        
-        
-    
- 
-@bot.message_handler(func=lambda message:get_state(message)== TEST)
-def handle_test(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
-    itembtn1 = types.KeyboardButton('/start') #Название кнопки 1
-    
-    
-    markup.add(itembtn1)
-    if message.text == "/start":
-        update_state(message,START)
-        bot.send_message(message.chat.id,"Возвращаюсь в меню",reply_markup=markup)
-    elif message.text.lower()=="да":
-        bot.send_message(message.chat.id,"Красава,уважаю")
-    elif message.text.lower() == "нет":
-        bot.send_message(message.chat.id,"Руслан ты?")
-    else:
-        bot.send_message(message.chat.id,"Ты не умеешь играть в эту игру")
-    update_state(message,START)
+
     
     
        
