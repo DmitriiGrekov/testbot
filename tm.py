@@ -96,10 +96,29 @@ def handle_lang1(message):
         r=requests.post(url,data={'key':key,'text':TEXT,'lang':LANg})
         bot.send_message(message.chat.id,*eval(r.text)['text'])
         bot.send_message(message.chat.id,"Введите фразу",reply_markup=markup)
-        
+   
         
     
+@bot.message_handler(func=lambda message:get_state(message)==TEST )
+def handle_test(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+    itembtn1 = types.KeyboardButton('@НАЗАД') #Название кнопки 1
     
+    
+    markup.add(itembtn1)
+    if message.text == "@НАЗАД":
+        update_state(message,START)
+        markup =types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True)  #Активация, название, количество кнопок по одной в ряду 
+        itembtn1 = types.KeyboardButton('Переводчик') #Название кнопки 1 
+        itembtn2 = types.KeyboardButton('Тест')
+        markup.add(itembtn1,itembtn2)
+    
+        bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
+    else:
+        if message.text == "Да":
+            bot.send_messge(message.chat.id,"Красава,уважаю")
+        
+        
     
 
 
