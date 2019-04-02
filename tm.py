@@ -7,8 +7,11 @@ from datetime import datetime
 token="889958255:AAFx0HHiWKr1qgcjA5jOYLsW_d84gxiKZ7U"
 START,TRANSLATE,TEST,SCHEDULE=range(4)
 bot=telebot.TeleBot(token)    
-
-    
+conn = sqlite3.connect("mydatabase.db")
+cursor = conn.cursor()
+cursor.execute("""CREATE TABLE subjects
+                  (person text, subject text,date text,to_date text,questions text)
+               """)
 
 @bot.message_handler(commands=["start"])
 def handle_message(message):
@@ -57,23 +60,19 @@ def first(message):
         bot.register_next_step_handler(send,second)
 def second(message):
     set_lang(message.chat.id,"subject",message.text)
-    set_lang(message.chat.id,"date",datetime.now())
+    set_lang(message.chat.id,"date",datetime.today())
     send=bot.send_message(message.chat.id,"Введите дату сдачи")
     bot.register_next_step_handler(send,third)
 def third(message):
     set_lang(message.chat.id,"to_date",message.text)
-    send=bot.send_message(message.chat.id,"Вывести домашку")
+    send=bot.send_message(message.chat.id,"Введите задание")
     bot.register_next_step_handler(send,fourth)
 def fourth(message):
-    if message.text.lower() == "да":
-        mes='''
-        <b>Предмет: {}</b>
-        <b>Дата выдачи: {}</b>
-         <b>Дата сдачи: {}  </b>
-         
-        '''.format(get_lang(message.chat.id)["subject"],get_lang(message.chat.id)["date"],get_lang(message.chat.id)["to_date"])
-        bot.send_message(message.chat.id, mes,parse_mode="HTML")
-        bot.send_message(message.chat.id,get_lang(message.chat.id))
+    set_lang(message.chat.id,"questions",message.text)
+    cursor.execute("INSERT INTO subjects VALUES (?,?,?,?,?)", [message.chat.id,get_lang(message.chat.id)["subject"],get_lang(message.chat.id)["date"],get_lang(message.chat.id)["to_date"],get_lang(message.chat.id)["questions"]])
+    bot.send_message(message.chat.id,"Добавлено")
+       
+    
     
     
     
