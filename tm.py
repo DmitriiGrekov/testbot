@@ -4,7 +4,7 @@ import requests
 from telebot import types
 from collections import defaultdict
 token="889958255:AAFx0HHiWKr1qgcjA5jOYLsW_d84gxiKZ7U"
-START,LANG1,LANG2,RESULT,TEST=range(5)
+START,TRANSLATE,TEST=range(3)
 bot=telebot.TeleBot(token)    
 
     
@@ -22,52 +22,65 @@ def handle_message(message):
 @bot.message_handler(func=lambda message:get_state(message)== START)
 def handle_lang(message):
     if message.text.lower() == "переводчик":
-        update_state(message,LANG1)
+        update_state(message,TRANSLATE)
         
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
         itembtn1 = types.KeyboardButton('ru') #Название кнопки 1
         itembtn2 = types.KeyboardButton('en')
     
         markup.add(itembtn1,itembtn2)
-        bot.send_message(message.chat.id,'Выберите первый язык',reply_markup=markup)
+        send=bot.send_message(message.chat.id,'Выберите первый язык',reply_markup=markup)
+        bot.registered_next_step_handler(send,set_firstlang)
     elif message.text.lower() == "тест":
         update_state(message,TEST)
         bot.send_message(message.chat.id,"Руслан гей?(да/нет)")
         
     
-
-
-
-@bot.message_handler(func=lambda message:get_state(message)== LANG1)
-def handle_lang1(message):
-    
+def set_firstlang(message):
+    bot.send_message(message.chat.id,"Устанавливаю первый язык")
+    set_lang(message.chat.id,"lang1",message.text):
+     
+        
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
     itembtn1 = types.KeyboardButton('ru') #Название кнопки 1
     itembtn2 = types.KeyboardButton('en')
+    backbut=types.KeyboardButton("@НАЗАД")
     
-    markup.add(itembtn1,itembtn2)
-    bot.send_message(message.chat.id,'Выберите второй язык',reply_markup=markup)
-    set_lang(message.chat.id,'lang1',message.text)
-    update_state(message,LANG2)
-@bot.message_handler(func=lambda message:get_state(message)== LANG2)
-def handle_lang2(message):
-    bot.send_message(message.chat.id,"Введите фразу")
-    update_state(message,RESULT)
-    set_lang(message.chat.id,'lang2',message.text)
-    if message.text == "/start":
-        update_state(message,START)
+    markup.add(itembtn1,itembtn2,backbut)
+    send=bot.send_message(message.chat.id,'Выберите второй язык',reply_markup=markup)
+    bot.registered_next_step_handler(send,set_secondlang)
+def set_secondlang(message):
+    bot.send_message(message.chat.id,"Устанавливаю второй язык")
+    set_lang(message.chat.id,"lang2",message.text):
+     
+        
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+    
+    backbut=types.KeyboardButton("@НАЗАД")
+    
+    markup.add(backbut)
+    send=bot.send_message(message.chat.id,'Введите фразу',reply_markup=markup)
+    
+    
+    
+    
 
+
+@bot.message_handler(func=lambda message:get_state(message)==TRANSLATE )
+def handle_lang1(message):
+    bot.send_message(message.chat.id,"Ваша фраза"+message.text)
     
     
-@bot.message_handler(func=lambda message:get_state(message)== RESULT)
+    
+
 def translate(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
-    itembtn1 = types.KeyboardButton('/start') #Название кнопки 1
+    itembtn1 = types.KeyboardButton('@НАЗАД') #Название кнопки 1
     
     
     markup.add(itembtn1)
     
-    if message.text == "/start":
+    if message.text == "@НАЗАД":
         update_state(message,START)
         bot.send_message(message.chat.id,"Возвращаюсь в меню",reply_markup=markup)
         
