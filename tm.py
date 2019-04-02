@@ -113,10 +113,10 @@ def handle_lang1(message):
 @bot.message_handler(func=lambda message:get_state(message)==TEST )
 def handle_test(message):
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
-    itembtn1 = types.KeyboardButton('@НАЗАД') #Название кнопки 1
-    
-    
-    markup.add(itembtn1)
+    itembtn3 = types.KeyboardButton('@НАЗАД') #Название кнопки 1
+    itembtn1 = types.KeyboardButton('Да')
+    itembtn2 = types.KeyboardButton('Нет')
+    markup.add(itembtn1,itembtn2,itembtn3)
     if message.text == "@НАЗАД":
         update_state(message,START)
         markup =types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True)  #Активация, название, количество кнопок по одной в ряду 
@@ -126,13 +126,26 @@ def handle_test(message):
     
         bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
     else:
-        if message.text == "Да":
+        if message.text.lower() == "да":
             markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
             itembtn1 = types.KeyboardButton('@НАЗАД') #Название кнопки 1
-    
+            f=open("images.jpg","rb")
+            
     
             markup.add(itembtn1)
             bot.send_message(message.chat.id,"Красава,уважаю",reply_markup=markup)
+            bot.send_photo(message.chat.id,f)
+        elif message.text.lower() == "нет":
+            markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+            itembtn1 = types.KeyboardButton('@НАЗАД') #Название кнопки 1
+            f=open("pidor.jpg","rb")
+            
+    
+            markup.add(itembtn1)
+            bot.send_message(message.chat.id,"Ты что пидор?",reply_markup=markup)
+            bot.send_photo(message.chat.id,f)
+            
+            
             
         
         
