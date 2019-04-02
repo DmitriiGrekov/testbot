@@ -116,7 +116,13 @@ def handle_test(message):
         bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
     else:
         if message.text == "Да":
-            bot.send_message(message.chat.id,"Красава,уважаю")
+            markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+            itembtn1 = types.KeyboardButton('@НАЗАД') #Название кнопки 1
+    
+    
+            markup.add(itembtn1)
+            bot.send_message(message.chat.id,"Красава,уважаю",reply_markup=markup)
+            
         
         
     
