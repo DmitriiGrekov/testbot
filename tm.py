@@ -68,6 +68,8 @@ def third(message):
     send=bot.send_message(message.chat.id,"Введите задание")
     bot.register_next_step_handler(send,fourth)
 def fourth(message):
+    conn = sqlite3.connect("mydatabase.db")
+    cursor = conn.cursor()
     set_lang(message.chat.id,"questions",message.text)
     cursor.execute("INSERT INTO subjects VALUES (?,?,?,?,?)", [message.chat.id,get_lang(message.chat.id)["subject"],get_lang(message.chat.id)["date"],get_lang(message.chat.id)["to_date"],get_lang(message.chat.id)["questions"]])
     bot.send_message(message.chat.id,"Добавлено")
