@@ -73,6 +73,7 @@ def fourth(message):
          
         '''.format(get_lang(message.chat.id)["subject"],get_lang(message.chat.id)["date"],get_lang(message.chat.id)["to_date"])
         bot.send_message(message.chat.id, mes,parse_mode="HTML")
+        bot.send_message(message.chat.id,get_lang(message.chat.id))
     
     
     
