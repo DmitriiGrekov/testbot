@@ -50,15 +50,6 @@ def set_firstlang(message):
     send=bot.send_message(message.chat.id,'Выберите второй язык',reply_markup=markup)
     bot.register_next_step_handler(send,set_secondlang)
 def set_secondlang(message):
-    bot.send_message(message.chat.id,"Устанавливаю второй язык")
-    set_lang(message.chat.id,"lang2",message.text)
-     
-        
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
-    
-    backbut=types.KeyboardButton("@НАЗАД")
-    
-    markup.add(backbut)
     if message.text == "@НАЗАД":
         update_state(message,START)
         markup =types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True)  #Активация, название, количество кнопок по одной в ряду 
@@ -67,8 +58,19 @@ def set_secondlang(message):
         markup.add(itembtn1,itembtn2)
     
         bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
+    else:
+        bot.send_message(message.chat.id,"Устанавливаю второй язык")
+        set_lang(message.chat.id,"lang2",message.text)
+     
         
-    send=bot.send_message(message.chat.id,'Введите фразу',reply_markup=markup)
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+    
+        backbut=types.KeyboardButton("@НАЗАД")
+    
+        markup.add(backbut)
+    
+        
+        send=bot.send_message(message.chat.id,'Введите фразу',reply_markup=markup)
     
     
     
