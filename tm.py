@@ -59,6 +59,7 @@ def first(message):
         send=bot.send_message(message.chat.id,"Введите предмет")
         bot.register_next_step_handler(send,second)
     elif message.text.lower()=="узнать домашку":
+        send=bot.send_message(message.chat.id,"Щас покажу")
         bot.register_next_step_handler(send,show_questions)
 def second(message):
     set_lang(message.chat.id,"subject",message.text)
