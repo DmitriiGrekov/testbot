@@ -3,8 +3,9 @@ import sqlite3
 import requests
 from telebot import types
 from collections import defaultdict
+from datetime import datetime
 token="889958255:AAFx0HHiWKr1qgcjA5jOYLsW_d84gxiKZ7U"
-START,TRANSLATE,TEST=range(3)
+START,TRANSLATE,TEST,SCHEDULE=range(4)
 bot=telebot.TeleBot(token)    
 
     
@@ -14,7 +15,8 @@ def handle_message(message):
     markup =types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True)  #Активация, название, количество кнопок по одной в ряду 
     itembtn1 = types.KeyboardButton('Переводчик') #Название кнопки 1 
     itembtn2 = types.KeyboardButton('Тест')
-    markup.add(itembtn1,itembtn2)
+    itembtn3 = types.KeyboardButton('Рассписание')
+    markup.add(itembtn1,itembtn2,itembtn3)
     
     bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
     
@@ -39,117 +41,45 @@ def handle_lang(message):
         itembtn2 = types.KeyboardButton('Нет')
         markup.add(itembtn1,itembtn2,itembtn3)
         bot.send_message(message.chat.id,"Руслан гей?(да/нет)",reply_markup=markup)
-        
-    
-def set_firstlang(message):
-    bot.send_message(message.chat.id,"Устанавливаю первый язык")
-    set_lang(message.chat.id,"lang1",message.text)
-     
-        
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
-    itembtn1 = types.KeyboardButton('ru') #Название кнопки 1
-    itembtn2 = types.KeyboardButton('en')
-    backbut=types.KeyboardButton("@НАЗАД")
-    
-    markup.add(itembtn1,itembtn2,backbut)
-    send=bot.send_message(message.chat.id,'Выберите второй язык',reply_markup=markup)
-    bot.register_next_step_handler(send,set_secondlang)
-def set_secondlang(message):
-    if message.text == "@НАЗАД":
-        update_state(message,START)
-        markup =types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True)  #Активация, название, количество кнопок по одной в ряду 
-        itembtn1 = types.KeyboardButton('Переводчик') #Название кнопки 1 
-        itembtn2 = types.KeyboardButton('Тест')
-        markup.add(itembtn1,itembtn2)
-    
-        bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
-    else:
-        bot.send_message(message.chat.id,"Устанавливаю второй язык")
-        set_lang(message.chat.id,"lang2",message.text)
-     
+    elif message.text.lower() == "Рассписание":
+        update_state(message,SCHEDULE)
         
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+        itembtn1 = types.KeyboardButton('Задать домашку') #Название кнопки 1
+        itembtn2 = types.KeyboardButton('Узнать домашку')
     
-        backbut=types.KeyboardButton("@НАЗАД")
-    
-        markup.add(backbut)
-    
-        
-        send=bot.send_message(message.chat.id,'Введите фразу',reply_markup=markup)
-    
-    
-    
-    
-
-
-@bot.message_handler(func=lambda message:get_state(message)==TRANSLATE )
-def handle_lang1(message):
-    if message.text == "@НАЗАД":
-        update_state(message,START)
-        markup =types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True)  #Активация, название, количество кнопок по одной в ряду 
-        itembtn1 = types.KeyboardButton('Переводчик') #Название кнопки 1 
-        itembtn2 = types.KeyboardButton('Тест')
         markup.add(itembtn1,itembtn2)
+        send=bot.send_message(message.chat.id,'Выберите функцию',reply_markup=markup)
+        bot.register_next_step_handler(send,first)
+def first(message):
+    if message.text.lower() == "задать домашку":
+        send=bot.send_message(message.chat.id,"Введите предмет")
+        bot.register_next_step_handler(send,second)
+def second(message):
+    set_lang(message.chat.id,"subject",message.text)
+    set_lang(message.chat.id,"date",datetime.now())
+    send=bot.send_message(message.chat.id,"Введите дату сдачи")
+    bot.register_next_step_handler(send,third)
+def third(message):
+    set_lang(message.chat.id,"to_date",message.text)
+    send=bot.send_message(message.chat.id,"Вывести домашку")
+    bot.register_next_step_handler(send,fourth)
+def fourth(message):
+    if message.text.lower == "да":
+        mes='''
+        <b>Предмет: {}</b>
+        <p>Дата выдачи: {}</p>
+         <p>Дата сдачи: {}  </p>
+         
+        '''.format(get_lang(message.chat.id)["subject"],get_lang(message.chat.id)["date"],get_lang(message.chat.id)["to_date"])
+        bot.send_message(chat_id=chat_id, mes, 
+                  parse_mode=telegram.ParseMode.HTML)
     
-        bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
-    else:
-        markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
-        itembtn1 = types.KeyboardButton('@НАЗАД') #Название кнопки 1
-    
-    
-        markup.add(itembtn1)
     
     
         
-        langer=get_lang(message.chat.id)
-        lang1=langer["lang1"]
-        lang2=langer["lang2"]
-    
-        url='https://translate.yandex.net/api/v1.5/tr.json/translate?'
-        key='trnsl.1.1.20190201T172728Z.34034e93ef318814.4cd85f71122011aa48770690493d232d5ff78c60'    
-        TEXT=message.text
-        LANg=lang1+"-"+lang2
-        r=requests.post(url,data={'key':key,'text':TEXT,'lang':LANg})
-        bot.send_message(message.chat.id,*eval(r.text)['text'])
-        bot.send_message(message.chat.id,"Введите фразу",reply_markup=markup)
-   
         
     
-@bot.message_handler(func=lambda message:get_state(message)==TEST )
-def handle_test(message):
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
-    itembtn3 = types.KeyboardButton('@НАЗАД') #Название кнопки 1
-    itembtn1 = types.KeyboardButton('Да')
-    itembtn2 = types.KeyboardButton('Нет')
-    markup.add(itembtn1,itembtn2,itembtn3)
-    if message.text == "@НАЗАД":
-        update_state(message,START)
-        markup =types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True)  #Активация, название, количество кнопок по одной в ряду 
-        itembtn1 = types.KeyboardButton('Переводчик') #Название кнопки 1 
-        itembtn2 = types.KeyboardButton('Тест')
-        markup.add(itembtn1,itembtn2)
-    
-        bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
-    else:
-        if message.text.lower() == "да":
-            markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
-            itembtn1 = types.KeyboardButton('@НАЗАД') #Название кнопки 1
-            f=open("images.jpg","rb")
-            
-    
-            markup.add(itembtn1)
-            bot.send_message(message.chat.id,"Красава,уважаю",reply_markup=markup)
-            bot.send_photo(message.chat.id,f)
-        elif message.text.lower() == "нет":
-            markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
-            itembtn1 = types.KeyboardButton('@НАЗАД') #Название кнопки 1
-            f=open("pidor.jpg","rb")
-            
-    
-            markup.add(itembtn1)
-            bot.send_message(message.chat.id,"Ты что пидор?",reply_markup=markup)
-            bot.send_photo(message.chat.id,f)
-            
             
             
         
