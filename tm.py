@@ -30,7 +30,7 @@ def handle_lang(message):
     
         markup.add(itembtn1,itembtn2)
         send=bot.send_message(message.chat.id,'Выберите первый язык',reply_markup=markup)
-        bot.registered_next_step_handler(send,set_firstlang)
+        bot.register_next_step_handler(send,set_firstlang)
     elif message.text.lower() == "тест":
         update_state(message,TEST)
         bot.send_message(message.chat.id,"Руслан гей?(да/нет)")
@@ -48,7 +48,7 @@ def set_firstlang(message):
     
     markup.add(itembtn1,itembtn2,backbut)
     send=bot.send_message(message.chat.id,'Выберите второй язык',reply_markup=markup)
-    bot.registered_next_step_handler(send,set_secondlang)
+    bot.register_next_step_handler(send,set_secondlang)
 def set_secondlang(message):
     bot.send_message(message.chat.id,"Устанавливаю второй язык")
     set_lang(message.chat.id,"lang2",message.text)
