@@ -116,7 +116,7 @@ def handle_test(message):
         bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
     else:
         if message.text == "Да":
-            bot.send_messge(message.chat.id,"Красава,уважаю")
+            bot.send_message(message.chat.id,"Красава,уважаю")
         
         
     
