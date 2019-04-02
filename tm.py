@@ -58,6 +58,8 @@ def first(message):
     if message.text.lower() == "задать домашку":
         send=bot.send_message(message.chat.id,"Введите предмет")
         bot.register_next_step_handler(send,second)
+    elif message.text.lower()=="узнать домашку":
+        bot.register_next_step_handler(send,show_questions)
 def second(message):
     set_lang(message.chat.id,"subject",message.text)
     set_lang(message.chat.id,"date",datetime.today())
@@ -68,11 +70,33 @@ def third(message):
     send=bot.send_message(message.chat.id,"Введите задание")
     bot.register_next_step_handler(send,fourth)
 def fourth(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+    itembtn3 = types.KeyboardButton('@НАЗАД')
+    markup.add(itembtn3)
     conn = sqlite3.connect("mydatabase.db")
     cursor = conn.cursor()
     set_lang(message.chat.id,"questions",message.text)
     cursor.execute("INSERT INTO subjects VALUES (?,?,?,?,?)", [message.chat.id,get_lang(message.chat.id)["subject"],get_lang(message.chat.id)["date"],get_lang(message.chat.id)["to_date"],get_lang(message.chat.id)["questions"]])
-    bot.send_message(message.chat.id,"Добавлено")
+    bot.send_message(message.chat.id,"Добавлено",reply_markup=markup)
+    update_state(message,START)
+    if message.text == "@НАЗАД":
+        markup =types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True)  #Активация, название, количество кнопок по одной в ряду 
+        itembtn1 = types.KeyboardButton('Переводчик') #Название кнопки 1 
+        itembtn2 = types.KeyboardButton('Тест')
+        itembtn3 = types.KeyboardButton('Рассписание')
+        markup.add(itembtn1,itembtn2,itembtn3)
+    
+        bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
+def show_questions(message):
+    conn = sqlite3.connect("mydatabase.db")
+    cursor = conn.cursor()
+    sql = "SELECT * FROM subjects WHERE person=?"
+    
+    for row in cursor.execute(sql,([message.chat.id])):
+        bot.send_message(message.chat.id,row[1])
+        
+        
+    
        
     
     
