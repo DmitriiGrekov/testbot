@@ -51,7 +51,7 @@ def set_firstlang(message):
     bot.registered_next_step_handler(send,set_secondlang)
 def set_secondlang(message):
     bot.send_message(message.chat.id,"Устанавливаю второй язык")
-    set_lang(message.chat.id,"lang2",message.text):
+    set_lang(message.chat.id,"lang2",message.text)
      
         
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
