@@ -33,7 +33,12 @@ def handle_lang(message):
         bot.register_next_step_handler(send,set_firstlang)
     elif message.text.lower() == "тест":
         update_state(message,TEST)
-        bot.send_message(message.chat.id,"Руслан гей?(да/нет)")
+        markup = types.ReplyKeyboardMarkup(resize_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
+        itembtn3 = types.KeyboardButton('@НАЗАД') #Название кнопки 1
+        itembtn1 = types.KeyboardButton('Да')
+        itembtn2 = types.KeyboardButton('Нет')
+        markup.add(itembtn1,itembtn2,itembtn3)
+        bot.send_message(message.chat.id,"Руслан гей?(да/нет)",reply_markup=markup)
         
     
 def set_firstlang(message):
