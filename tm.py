@@ -41,7 +41,7 @@ def handle_lang(message):
         itembtn2 = types.KeyboardButton('Нет')
         markup.add(itembtn1,itembtn2,itembtn3)
         bot.send_message(message.chat.id,"Руслан гей?(да/нет)",reply_markup=markup)
-    elif message.text.lower() == "Рассписание":
+    elif message.text.lower() == "рассписание":
         update_state(message,SCHEDULE)
         
         markup = types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True) #Активация, название, количество кнопок по одной в ряду 
@@ -65,7 +65,7 @@ def third(message):
     send=bot.send_message(message.chat.id,"Вывести домашку")
     bot.register_next_step_handler(send,fourth)
 def fourth(message):
-    if message.text.lower == "да":
+    if message.text.lower() == "да":
         mes='''
         <b>Предмет: {}</b>
         <p>Дата выдачи: {}</p>
