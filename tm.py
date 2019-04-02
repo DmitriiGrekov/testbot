@@ -59,6 +59,15 @@ def set_secondlang(message):
     backbut=types.KeyboardButton("@НАЗАД")
     
     markup.add(backbut)
+    if message.text == "@НАЗАД":
+        update_state(message,START)
+        markup =types.ReplyKeyboardMarkup(resize_keyboard=True,one_time_keyboard=True)  #Активация, название, количество кнопок по одной в ряду 
+        itembtn1 = types.KeyboardButton('Переводчик') #Название кнопки 1 
+        itembtn2 = types.KeyboardButton('Тест')
+        markup.add(itembtn1,itembtn2)
+    
+        bot.send_message(message.chat.id,"Выберите функцию",reply_markup=markup)
+        
     send=bot.send_message(message.chat.id,'Введите фразу',reply_markup=markup)
     
     
