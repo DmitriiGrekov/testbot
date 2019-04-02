@@ -68,8 +68,8 @@ def fourth(message):
     if message.text.lower() == "да":
         mes='''
         <b>Предмет: {}</b>
-        <p>Дата выдачи: {}</p>
-         <p>Дата сдачи: {}  </p>
+        <b>Дата выдачи: {}</b>
+         <b>Дата сдачи: {}  </b>
          
         '''.format(get_lang(message.chat.id)["subject"],get_lang(message.chat.id)["date"],get_lang(message.chat.id)["to_date"])
         bot.send_message(message.chat.id, mes,parse_mode="HTML")
