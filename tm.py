@@ -7,7 +7,7 @@ from datetime import datetime
 token="889958255:AAFx0HHiWKr1qgcjA5jOYLsW_d84gxiKZ7U"
 START,TRANSLATE,TEST,SCHEDULE=range(4)
 bot=telebot.TeleBot(token)    
-conn = sqlite3.connect(":memory:")
+conn = sqlite3.connect("todo.sqlite")
 cursor = conn.cursor()
 cursor.execute("""CREATE TABLE subjects
                   (person text, subject text,date text,to_date text,questions text)
