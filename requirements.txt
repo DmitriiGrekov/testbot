@@ -23,7 +23,7 @@ MarkupSafe==1.1.1
 mccabe==0.6.1
 only==2018.11.20
 Pillow==5.4.1
-psutil==5.5.1
+psutil==5.6.6
 public==2018.11.20
 pydub==0.23.1
 pygame==1.9.4
